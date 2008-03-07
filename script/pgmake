@@ -1,0 +1,126 @@
+#!perl
+#: pgmake
+#: GNU make-like utility using Makefile::Parser::Gnu
+#: Copyright (c) 2006 Agent Zhang
+#: 2006-02-21 2006-02-21
+
+use strict;
+use warnings;
+
+#use Makefile::Parser::Gnu;
+use Getopt::Std;
+use Text::Balanced qw( gen_extract_tagged );
+
+my %opts;
+getopts('vf:', \%opts);
+
+our $interp_pat = gen_extract_tagged('$[({]','$[)}]');
+
+my $makefile = $opts{f} || 'Makefile';
+open my $fh, $makefile or
+    die "make: $makefile: $!\n";
+while (<$fh>) {
+    my @tokens = tokenize_line($_);
+    warn "!!! ", (join ' ', map { s/\\/\\\\/g; s/\n/\\n/g; s/\t/\\t/g; "[$_]" } @tokens), "\n";
+}
+close $fh;
+
+sub tokenize_line {
+    local $_ = shift;
+    $_ .= "\n" if !/\n$/s;
+    my @flds;
+    my $token = '';
+    my $next_token;
+    while (1) {
+        #warn '@flds = ', Dumper(@flds);
+        if (/(?x) \G [\s\n]+ /gc) {
+            $next_token = MK::Token::Whitespace->new($&);
+        } elsif (/(?x) \G (?: := | \?= | \+= | [=:;] )/gc) {
+            $next_token = MK::Token::Seperator->new($&);
+        } elsif (/(?x) \G $interp_pat/ogc) {
+            $next_token = MK::Token::Interpolation->new($&);
+        } elsif (/(?x) \G \\ (.) /gcs) {
+            my $c = $1;
+            if ($c eq "\n") {
+                push @flds, $token if $token;
+                push @flds, MK::Token::LineContinuation->new("\\\n");
+                return @flds;
+            } else {
+                $token .= "\\$c";
+            }
+        } elsif (/(?x) \G (\# [^\n]*) \\ \n/sgc) {
+            my $s = $1;
+            push @flds, $token if $token;
+            push @flds, MK::Token::Comment->new($s);
+            push @flds, MK::Token::LineContinuation->new("\\\n");
+            return @flds;
+        } elsif (/(?x) \G \# [^\n]* /gc) {
+            $next_token = MK::Token::Comment->new($&);
+        } elsif (/(?x) \G . /gc) {
+            $token .= $&;
+        } else {
+            last;
+        }
+        if ($next_token) {
+            if ($token) {
+                push @flds, $token;
+                $token = '';
+            }
+            push @flds, $next_token;
+            $next_token = '';
+        }
+    }
+    @flds;
+}
+
+package MK::Token;
+
+use strict;
+use warnings;
+use overload
+    '""'  => sub { shift->{content} },
+    'fallback' => 1;
+
+sub new {
+    my ($class, $content) = @_;
+    bless {
+        content => $content,
+    }, $class;
+}
+
+sub set_content {
+    my ($self, $content) = @_;
+    $self->{content} = $content;
+}
+
+sub add_content {
+    my ($self, $content) = @_;
+    $self->{content} .= $content;
+}
+
+BEGIN {
+    @MK::Token::Whitespace::ISA    = 'MK::Token';
+    @MK::Token::Comment::ISA       = 'MK::Token';
+    @MK::Token::Seperator::ISA     = 'MK::Token';
+    @MK::Token::Interpolation::ISA = 'MK::Token';
+    @MK::Token::LineContinuation::ISA = 'MK::Token';
+    @MK::Token::Unknown::ISA = 'MK::Token';
+}
+
+__END__
+
+=head1 NAME
+
+pgmake - GNU make-like utility using Makefile::Parser::Gnu
+
+=head1 VERSION
+
+This document describes the `pgmake' utility released on March XX, 2006.
+
+=head1 SEE ALSO
+
+L<Makefile::Parser::Gnu>, L<plmake>.
+
+=head1 AUTHOR
+
+Agent Zhang L<mailto:agentzh@gmail.com>

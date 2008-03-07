@@ -1,0 +1,130 @@
+#!perl
+#: plmake
+#: 2006-01-25 2006-01-25
+
+use strict;
+use warnings;
+
+use Makefile::Parser;
+use Getopt::Std;
+use Data::Dumper::Simple;
+
+our $DEBUG = 0;
+
+my %opts;
+getopts('f:', \%opts);
+
+my $infile = $opts{f} || 'Makefile';
+
+my $make = Makefile::Parser->new;
+$make->parse_file($infile) or die $make->error;
+
+unshift @ARGV, $make->target if not @ARGV;
+warn "Goal: @ARGV\n" if $DEBUG;
+for (@ARGV) {
+    my $status = build($_);
+    if ($status == 0) {
+        info("Nothing to be done for `$_'");
+    }
+}
+
+sub build {
+    my $goal = shift;
+    warn "building goal $goal\n" if $DEBUG;
+    my $tar = $make->target($goal);
+    #die Dumper($tar) if $goal eq 'test.exe';
+    warn Dumper($tar) if $DEBUG;
+    if (not $tar) {
+        if (-f $goal) {
+            return 0;
+        } else {
+            error("No rule to make target `$goal'");
+        }
+    }
+    #if ($tar eq 'pure_all') {
+        #die;
+    #}
+    my $changed;
+    my @prereqs = $tar->prereqs;
+    $changed = 1 if not @prereqs;
+    #warn "  Prereqs: @prereqs";
+    for my $prereq (@prereqs) {
+        $changed += build($prereq);
+        if (-f $prereq and -f $goal and -M $prereq < -M $goal) {
+            warn $goal, '(', -M $goal, ") : $prereq (", -M $prereq, ')' if $DEBUG;
+            $changed = 1;
+        }
+    }
+    if ($changed or not -f $goal) {
+        for my $cmd ($tar->commands) {
+            print "    $cmd\n";
+            $cmd =~ s/^[-+]//;
+            system($cmd);
+            $changed++;
+        }
+    }
+    return 0 if not $changed;
+    return 1;
+}
+
+sub error {
+    my $msg = shift;
+    die "make: $msg.  Stop.\n";
+}
+
+sub info {
+    my $msg = shift;
+    print "make: $msg.\n";
+    exit(0);
+}
+
+0;
+__END__
+
+=head1 NAME
+
+plmake - A make utility that uses Makefile::Parser
+
+=head1 SYNOPSIS
+
+    plmake
+    plmake -f Makefile.old
+
+=head1 DESCRIPTION
+
+=head1 OPTIONS
+
+=head1 BUGS
+
+=over
+
+=item *
+
+Double colone rules doesn't work properly.
+
+=item *
+
+Multiple target rules not supported.
+
+=item *
+
+.PHONY not supported.
+
+=item *
+
+$(MAKE), $(CC), etc. not set by default
+
+=back
+
+=head1 AUTHOR
+
+Agent Zhang, E<lt>agent2002@126.comE<gt>
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright (c) 2005 Agent Zhang.
+
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.
+
+=cut
