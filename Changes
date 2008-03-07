@@ -1,3 +1,7 @@
-= 0.001  2007-03-9
+0.002  2008-03-07
+* Added comprehensive POD to Makefile::DOM.
+* Fixed the POD in MDOM::Dumper.
+
+0.001  2008-03-07
 * inital CPAN release
 
