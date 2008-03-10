@@ -1,3 +1,7 @@
+0.003  2008-03-10
+* Removed script/pgmake and script/plmake from MANIFEST.
+* Tweaked the POD a bit.
+
 0.002  2008-03-07
 * Added comprehensive POD to Makefile::DOM.
 * Fixed the POD in MDOM::Dumper.

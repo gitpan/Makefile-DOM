@@ -1,10 +1,9 @@
 --- 
 abstract: Simple DOM parser for Makefiles
-author: Agent Zhang <agentzh@gmail.com>
-build_requires: 
-  Test::Base: 0.53
+author: 
+  - Agent Zhang <agentzh@gmail.com>
 distribution_type: module
-generated_by: Module::Install version 0.67
+generated_by: Module::Install version 0.68
 license: perl
 meta-spec: 
   url: http://module-build.sourceforge.net/META-spec-v1.3.html
@@ -20,4 +19,4 @@ requires:
   Params::Util: 0.22
   perl: 5.6.1
 tests: t/mdom/*.t t/mdom/*/*.t
-version: 0.002
+version: 0.003

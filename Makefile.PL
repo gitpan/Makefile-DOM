@@ -1,8 +1,9 @@
 use strict;
+use lib '.';
 use inc::Module::Install;
 
 name            ('Makefile-DOM');
-requires        (perl => '5.6.1');
+requires        (perl => '5.006001');
 all_from        ('lib/Makefile/DOM.pm');
 
 #install_script  ('script/pgmake');
@@ -13,13 +14,14 @@ requires        ('Params::Util'    => '0.22');
 #requires        ('Text::Balanced'  => '1.95');
 requires        ('Clone'           => '0.18');
 
-build_requires  ('Test::Base'      => '0.53');
 #build_requires  ('Test::More'      => '0.62');
 #build_requires  ('IPC::Run3'       => '0.036');
 #build_requires  ('File::Temp'      => '0.16');
 #build_requires  ('File::Spec'      => '3.12');
 #build_requires  ('Cwd'             => '3.12');
 #build_requiers  ('FindBin'         => '1.47');
+
+use_test_base;
 
 tests('t/mdom/*.t t/mdom/*/*.t'); # t/*/*.t t/*/*/*t t/*/*/*/*.t');
 
