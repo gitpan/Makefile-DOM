@@ -37,7 +37,7 @@ use Params::Util '_INSTANCE';
 
 use vars qw{$VERSION};
 BEGIN {
-	$VERSION = '0.004';
+	$VERSION = '0.005';
 }
 
 
@@ -308,7 +308,7 @@ See the L<support section|MDOM/SUPPORT> in the main module.
 
 Adam Kennedy E<lt>adamk@cpan.orgE<gt>
 
-Agent Zhang C<< <agentzh@yahoo.cn> >>
+Zhang "agentzh" Yichun C<< <agentzh@gmail.com> >>
 
 =head1 COPYRIGHT
 

@@ -3,7 +3,7 @@ package Makefile::DOM;
 use strict;
 use warnings;
 
-our $VERSION = '0.004';
+our $VERSION = '0.005';
 
 use MDOM::Document;
 use MDOM::Element;
@@ -18,13 +18,15 @@ use MDOM::Directive;
 1;
 __END__
 
+=encoding utf-8
+
 =head1 NAME
 
 Makefile::DOM - Simple DOM parser for Makefiles
 
 =head1 VERSION
 
-This document describes Makefile::DOM 0.004 released on March 10, 2008.
+This document describes Makefile::DOM 0.005 released on 10 August 2011.
 
 =head1 DESCRIPTION
 
@@ -190,13 +192,21 @@ The current implemenation of the L<MDOM::Document::Gmake> lexer is based on a ha
 
 =back
 
+=head1 SOURCE REPOSITORY
+
+You can always get the latest source code of this module from its GitHub repository:
+
+L<http://github.com/agentzh/makefile-dom-pm>
+
+If you want a commit bit, please let me know.
+
 =head1 AUTHOR
 
-Agent Zhang E<lt>agentzh@gmail.comE<gt>
+Zhang "agentzh" Yichun (章亦春) E<lt>agentzh@gmail.comE<gt>
 
 =head1 COPYRIGHT
 
-Copyright 2006-2008 by Agent Zhang.
+Copyright 2006-2011 by Zhang "agentzh" Yichun (章亦春).
 
 This library is free software; you can redistribute it and/or
 modify it under the same terms as Perl itself.
