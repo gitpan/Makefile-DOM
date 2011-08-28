@@ -48,8 +48,8 @@ script/checkenv
 script/mdom-dump
 script/p4_to_t.pl
 script/sh
-t/00-pod-coverage.t
-t/00-pod.t
+t/pod-coverage.t
+t/pod.t
 t/Gmake.pm
 t/GmakeDOM.pm
 t/lib/Test/Make/Base.pm
@@ -65,7 +65,6 @@ t/mdom/gmake/directive-export.t
 t/mdom/gmake/directive-include.t
 t/mdom/gmake/directive-vpath.t
 t/mdom/gmake/interpolation.t
-t/mdom/gmake/mdom-tests.txt
 t/mdom/gmake/misc.t
 t/mdom/gmake/order_only.t
 t/mdom/gmake/rule-simple.t
