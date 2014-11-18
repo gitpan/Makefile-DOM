@@ -37,7 +37,7 @@ use overload 'bool' => sub () { 1 },
 
 use vars qw{$VERSION $errstr %_PARENT};
 BEGIN {
-	$VERSION = '0.006';
+	$VERSION = '0.007';
 	$errstr  = '';
 
 	# Master Child -> Parent index
@@ -67,6 +67,12 @@ Returns true if the Element is significant, or false it not.
 
 ### XS -> MDOM/XS.xs:_MDOM_Element__significant 0.845+
 sub significant { 1 }
+
+=head2 lineno
+
+Accessor for current line number.
+
+=cut
 
 sub lineno {
     $_[0]->{lineno};
@@ -194,6 +200,8 @@ sub top {
 }
 
 =pod
+
+=head2 document
 
 For an Element that is contained within a L<MDOM::Document> object,
 the C<document> method will return the top-level Document for the Element.

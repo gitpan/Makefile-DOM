@@ -1,14 +1,13 @@
 ---
 abstract: 'Simple DOM parser for Makefiles'
 author:
-  - "Yichun \"agentzh\" Zhang (章亦春) <agentzh@gmail.com>"
+  - "Yichun \"agentzh\" Zhang (ç« äº¦æ¥) <agentzh@gmail.com>"
 build_requires:
   ExtUtils::MakeMaker: 6.59
 configure_requires:
-  ExtUtils::MakeMaker: 6.59
-distribution_type: module
-dynamic_config: 1
-generated_by: 'Module::Install version 1.06'
+  ExtUtils::MakeMaker: 0
+dynamic_config: 0
+generated_by: 'ExtUtils::MakeMaker version 6.6302, CPAN::Meta::Converter version 2.131490'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -16,15 +15,12 @@ meta-spec:
 name: Makefile-DOM
 no_index:
   directory:
-    - inc
     - t
+    - inc
 requires:
   Clone: 0.18
   Filter::Util::Call: 0
   List::MoreUtils: 0.21
   Params::Util: 0.22
-  perl: 5.6.1
-resources:
-  license: http://dev.perl.org/licenses/
-  repository: http://github.com/agentzh/makefile-dom-pm
+  perl: 5.006001
 version: 0.007

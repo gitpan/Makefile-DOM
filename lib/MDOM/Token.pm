@@ -28,7 +28,7 @@ use Params::Util '_INSTANCE';
 
 use vars qw{$VERSION};
 BEGIN {
-	$VERSION = '0.006';
+	$VERSION = '0.007';
 }
 
 # We don't load the abstracts, they are loaded
@@ -72,6 +72,12 @@ sub new {
 	# Invalid argument count
 	undef;
 }
+
+=head2  set_class
+
+Set a specific class for a token.
+
+=cut
 
 sub set_class {
 	my $self  = shift; @_ or return undef;
